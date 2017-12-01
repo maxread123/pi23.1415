@@ -1,0 +1,873 @@
+oristeći biblioteku random, napravite listu "brojevi" od 30 elemenata koja sadrži slučajno generirane brojeve iz intervala [1000, 100000]. Zatim tražite od korisnika da unese prirodan broj između 1 i 10 kojeg ćete spremiti u varijablu "granica". Koristeći list comprehension od liste "brojevi" napravite novu listu "filtrirani" koja će sadržavati samo one elemente iz liste "brojevi" čija je aritmetička sredina znamenki veća od broja "granica". Nakon toga, definirajte rječnik "vrijednosti" koji će kao ključeve sadržavati aritmetičke sredine elementata iz liste "filtrirani", a kao vrijednosti liste  brojeva koji imaju te vrijednosti aritmetičke sredine znamenki. Ispišite dobivenu listu "filtrirani" i rječnik "vrijednosti 
+ 
+import random 
+ 
+def arSred(broj): 
+    suma = 0 
+    brojac = 0 
+    while broj>0: 
+        suma += broj%10 
+        brojac += 1 
+        broj = broj//10 
+    return suma/brojac 
+     
+ 
+brojevi = [] 
+ 
+for i in range(30): 
+    brojevi.append(random.randint(1000,100000)) 
+#brojevi = [5555, 55555, 66666, 34254, 67856, 6666] 
+print(brojevi) 
+ 
+granica = int(input("Unesite prirodan broj: ")) 
+ 
+filtrirani = [x for x in brojevi if arSred(x)>granica] 
+print(filtrirani) 
+ 
+vrijednosti = {} 
+ 
+for el in filtrirani: 
+    if arSred(el) not in vrijednosti: 
+        vrijednosti[arSred(el)] = [] 
+    vrijednosti[arSred(el)].append(el) 
+     
+print(vrijednosti) 
+ 
+U fileu reprezentacija.txt se nalazi popis igrača u Hrvatskoj rukometnoj reprezentaciji. Učitajte podatke iz tog filea i spremite ih u rječnik "igraci" na sljedeći način: ključ je ime i prezime određenog igrača, a vrijednost je uređena četvorka koja na prvom mjestu ima poziciju igrača, na drugom mjestu visinu, na trećem težinu i na četvrtom godine igrača. U fileovima postava1.txt i postava2.txt se nalazi po 7 imena igrača. Vaš zadatak je učitati imena igrača iz svakog filea i provjeriti mogu li  nabrojani igrači činiti prvu postavu. Da bi igrači mogli činiti prvu postavu,  među njima mora biti točno jedan vratar, točno jedan pivot, dva krila i tri  vanjska igrača. Ukoliko igrači iz pojedinog filea mogu činiti prvu postavu, na kraj tog filea treba nadopisati sljedeća dva retka: Prosječna visina igrača u postavi: (visina - 2 decimale) Prosječan broj godina igrača u postavi: (br.god - 2 decimale) Ukoliko igrači iz pojedinog filea ne mogu činiti prvu postavu, u taj file na kraj treba napisati poruku: Nabrojani igrači ne mogu činiti prvu postavu. 
+ 
+file_igraci = open('reprezentacija.txt','r') 
+igraci = {} 
+ 
+for line in file_igraci: 
+    pom_lista = line.rstrip().split(';') 
+    igraci[pom_lista[0]]=tuple(pom_lista[1:]) 
+     
+#print(igraci) 
+file_igraci.close() 
+ 
+postava = {'vratar':0, 'vanjski':0, 'pivot':0, 'krilo':0} 
+lista_postava = [] 
+file_p1 = open('postava1.txt','r') 
+for line in file_p1: 
+    lista_postava.append(line.rstrip()) 
+file_p1.close() 
+ 
+#print(lista_postava) 
+for igrac in lista_postava: 
+    postava[igraci[igrac][0]] +=1 
+         
+#print(postava) 
+file_p1 = open('postava1.txt','a') 
+file_p1.write('\n') 
+file_p1.write('\n') 
+if postava['vratar']==1 and postava['vanjski']==3 and postava['krilo']==2 and postava['pivot']==1: 
+    prosjekGodine = 0 
+    prosjekVisina = 0 
+    for i in lista_postava: 
+        prosjekGodine += int(igraci[i][3]) 
+        prosjekVisina += int(igraci[i][1]) 
+    prosjekGodine = prosjekGodine/7 
+    prosjekVisina = prosjekVisina/7 
+    file_p1.write("Prosječna visina igrača u postavi: %.2f"%prosjekVisina) 
+    file_p1.write("\n") 
+    file_p1.write("Prosječan broj godina igrača u postavi: %.2f"%prosjekGodine) 
+else: 
+    file_p1.write("Nabrojani igrači ne mogu činiti prvu postavu.") 
+file_p1.close() 
+ 
+postava = {'vratar':0, 'vanjski':0, 'pivot':0, 'krilo':0} 
+lista_postava = [] 
+file_p2 = open('postava2.txt','r') 
+for line in file_p2: 
+    lista_postava.append(line.rstrip()) 
+file_p2.close() 
+ 
+#print(lista_postava) 
+for igrac in lista_postava: 
+    postava[igraci[igrac][0]] +=1 
+         
+#print(postava) 
+file_p2 = open('postava2.txt','a') 
+file_p2.write('\n') 
+file_p2.write('\n') 
+if postava['vratar']==1 and postava['vanjski']==3 and postava['krilo']==2 and postava['pivot']==1: 
+    prosjekGodine = 0 
+    prosjekVisina = 0 
+    for i in lista_postava: 
+        prosjekGodine += int(igraci[i][3]) 
+        prosjekVisina += int(igraci[i][1]) 
+    prosjekGodine = prosjekGodine/7 
+    prosjekVisina = prosjekVisina/7 
+    file_p2.write("Prosječna visina igrača u postavi: %.2f"%prosjekVisina) 
+    file_p2.write("\n") 
+    file_p2.write("Prosječan broj godina igrača u postavi: %.2f"%prosjekGodine) 
+else: 
+    file_p2.write("Nabrojani igrači ne mogu činiti prvu postavu.") 
+file_p2.close() 
+ 
+Napišite klasu Blagajna koja će kao atribute imati 10 varijabli, jednu koja će predstavljati broj kovanica od 1kn, jednu koja će predstavljati broj kovanica od 2kn, treća će predstavljati broj kovanica od 5kn, a sljedećih 7 će redom  predstavljati količinu novčanica od 10kn, 20kn, 50kn, 100kn, 200kn, 500kn i 1000kn. Definirajte metodu stanje() koja će vratiti ukupnu trenutnu količinu novca u blagajni.  Predefinirajte metodu __eq__ tako da vrati True ako dvije blagajne sadrže jednaku količinu novca. Predefinirajte metodu __str__ tako da print(blagajna) ispiše količinu svih apoena u blagajni. Definirajte metodu ostatak() koja kao argument prima neki iznos novca, zatim  izračuna koliko najmanje novčanica treba da bi se taj iznos vratio. Ukoliko u blagajni ima dovoljno pojedinih novčanica i kovanica da se taj iznos vrati, treba oduzeti te kovanice i novčanice iz blagajne i ispisati novo stanje u blagajni, a ako neke novčanice ili kovanice nema dovoljno da bi se izvratio dani ostatak, treba ispisati odgovarajuću poruku. 
+ 
+class Blagajna: 
+    def __init__(self, kn1, kn2, kn5, kn10, kn20, kn50, kn100, kn200, kn500, kn1000): 
+        self.kn1 = kn1 
+        self.kn2 = kn2 
+        self.kn5 = kn5 
+        self.kn10 = kn10 
+        self.kn20 = kn20 
+        self.kn50 = kn50 
+        self.kn100 = kn100 
+        self.kn200 = kn200 
+        self.kn500 = kn500 
+        self.kn1000 = kn1000 
+         
+    def stanje(self): 
+        return self.kn1 + 2*self.kn2 + 5*self.kn5 + 10*self.kn10 + 20*self.kn20 + 50*self.kn50 + \ 
+            100*self.kn100 + 200*self.kn200 + 500*self.kn500 + 1000*self.kn1000 
+             
+    def __eq__(self, b2): 
+        return self.stanje() == b2.stanje() 
+         
+    def __str__(self): 
+        s = "Blagajna: \n" 
+        s += "1kn: " 
+        s += str(self.kn1) 
+        s += ", " 
+        s += "2kn: " 
+        s += str(self.kn2) 
+        s += ", " 
+        s += "5kn: " 
+        s += str(self.kn5) 
+        s += ", " 
+        s += "10kn: " 
+        s += str(self.kn10) 
+        s += ", " 
+        s += "20kn: " 
+        s += str(self.kn20) 
+        s += ", " 
+        s += "50kn: " 
+        s += str(self.kn50) 
+        s += ", " 
+        s += "100kn: " 
+        s += str(self.kn100) 
+        s += ", " 
+        s += "200kn: " 
+        s += str(self.kn200) 
+        s += ", " 
+        s += "500kn: " 
+        s += str(self.kn500) 
+        s += ", " 
+        s += "1000kn: " 
+        s += str(self.kn1000) 
+        s += "\n" 
+        return s 
+         
+    def ostatak(self, iznos): 
+        l = [1000,500,200,100,50,20,10,5,2,1] 
+        d = {1:0, 2:0, 5:0, 10:0, 20:0, 50:0, 100:0, 200:0, 500:0, 1000:0} 
+        for a in l: 
+            while iznos - a >= 0: 
+                iznos = iznos - a 
+                d[a] = d.get(a,0)+1 
+        lista = list(d.items()) 
+        lista.sort() 
+        if lista[0][1]<=self.kn1 and lista[1][1]<=self.kn2 and lista[2][1]<=self.kn5 \ 
+        and lista[3][1]<=self.kn10 and lista[4][1]<=self.kn20 and lista[5][1]<=self.kn50\ 
+        and lista[6][1]<=self.kn100 and lista[7][1]<=self.kn200 and lista[8][1]<=self.kn500\ 
+        and lista[9][1]<=self.kn1000: 
+            self.kn1 -= lista[0][1] 
+            self.kn2 -= lista[1][1] 
+            self.kn5 -= lista[2][1] 
+            self.kn10 -= lista[3][1] 
+            self.kn20 -= lista[4][1] 
+            self.kn50 -= lista[5][1] 
+            self.kn100 -= lista[6][1] 
+            self.kn200 -= lista[7][1] 
+            self.kn500 -= lista[8][1] 
+            self.kn1000 -= lista[9][1] 
+            print("Novo stanje u blagajni je %d kn."%self.stanje()) 
+        else: 
+            print("U blagajni nema dovoljno određenih novčanica da bi se vratio željeni ostatak.") 
+                 
+if __name__ == "__main__": 
+    b1 = Blagajna(10, 5, 2, 3, 5, 2, 5, 4, 1, 1) 
+    b2 = Blagajna(12, 4, 4, 4, 4, 2, 5, 4, 1, 1) 
+    print(b1.stanje()) 
+    print(b1==b2) 
+    print(b1)   
+    b1.ostatak(579) 
+    b2.ostatak(3541) 
+    print(b1) 
+ 
+# Definirajte klasu Kartica koja kao atribute ima id i stanje. Klasa treba imati i dvije dodatne metode uplati i isplati koje će kao argument primiti neki iznos i za taj iznos promijeniti atribut stanje (uplati poveća stanje za dani iznos, isplati smanji stanje za dani iznos). Klasa treba imati i poseban atribut klase brojTransakcija koji će brojati koliko puta se izvršila uplata ili isplata, neovisno na kojoj kartici.Zatim definirajte klasu VIPKartica koja će naslijediti klasu Kartica. VIPKartica treba imati metodu isplati isto kao i klasa Kartica, ali uz još jedan dodatni izborni argument paziNaPrekoracenje koji će po defaultu biti postavljen na False. Ako je vrijednost atributa paziNaPrekoracenje False, metoda isplati treba pozvati metodu isplati iz klase Kartica. Ako je vrijednost atributa paziNaPrekoracenje True, metoda isplati treba provjeriti hoće li isplata dovesti stanje u minus. Ako hoće, treba baciti ValueError sa porukom: "Nećemo napraviti ovu transakciju jer ćete otići u minus!", u suprotnom, treba napraviti isplatu i ažurirati vrijednost atributa brojTransakcija. 
+ 
+class Kartica: 
+    brojTransakcija=0 
+    def __init__(self,id_kartice,stanje): 
+        self.id_kartice=id_kartice 
+        self.stanje=stanje 
+    def uplati(self,iznos): 
+        self.stanje+=iznos 
+        Kartica.brojTransakcija+=1 
+    def isplati(self,iznos): 
+        self.stanje-=iznos 
+        Kartica.brojTransakcija+=1 
+class VIPKartica(Kartica): 
+    def __init__(self,id_kartice,stanje): 
+        Kartica.__init__(self,id_kartice,stanje) 
+    def isplati(self,iznos,paziNaPrekoracenje=False): 
+        if paziNaPrekoracenje==False: 
+            Kartica.isplati(self,iznos) 
+        else: 
+            try: 
+                if(self.stanje-iznos<0): 
+                    raise ValueError("Necemo napraviti ovu transakciju jer cete otici u minus!") 
+                else: 
+                    self.stanje-=iznos 
+                    Kartica.brojTransakcija+=1 
+            except ValueError as err: 
+                print(err) 
+ 
+if __name__=="__main__": 
+    k1=Kartica(1,1234.65) 
+    print("Broj transakcija: ",k1.brojTransakcija) 
+    print("Stanje kartice: ",k1.stanje) 
+    k1.uplati(250) 
+    print("Broj transakcija: ",k1.brojTransakcija) 
+    print("Stanje kartice: ",k1.stanje) 
+    k2=VIPKartica(2,2365.23) 
+    print("Broj transakcija: ",k2.brojTransakcija) 
+    print("Stanje kartice: ",k2.stanje) 
+    k2.isplati(4000,True) 
+    print("Broj transakcija: ",k2.brojTransakcija) 
+    print("Stanje kartice: ",k2.stanje) 
+    k2.isplati(1000,True) 
+    print("Broj transakcija: ",k2.brojTransakcija) 
+    print("Stanje kartice: ",k2.stanje) 
+ 
+# Napišite funkciju promijeni koja će kao prvi argument dobiti listu slova, a kao drugi argument neki string. Funkcija treba u danom stringu sva slova koja se pojavljuju u danoj listi prebaciti u uppercase i kao rezultat vratiti takav promijenjen string. U main dijelu programa tražite od korisnika da unese neki prirodan broj n. Zatim n puta tražite od korisnika da unese neko slovo i to slovo dodajte u listu listaSlova. Učitajte file text.txt te koristeći funkciju promijeni, svaki redak filea modificirajte koristeči listu listaSlova. Takve modificirane rečenice spremite u novi file izmjenaTeksta.txt.Za funkciju promijeni u posebnom fileu napravite unittest sa barem tri testa. 
+ 
+def promijeni(lista,string): 
+    rj="" 
+    for slovo in string: 
+        if slovo in lista: 
+            rj+=slovo.upper() 
+        else: 
+            rj+=slovo 
+    return rj 
+ 
+if __name__=="__main__": 
+    n=int(input("Unesite prirodan broj n: ")) 
+    listaSlova=[] 
+    for i in range(0,n): 
+        unos=input("Unesite slovo: ") 
+        listaSlova.append(unos) 
+    # u fajlu koji sam predao sam unio 3 slova, V,U,P i njih pretvorio u uppercase 
+    file=open("tekst.txt","r") 
+    file2=open("izmjenaTeksta.txt","w") 
+    for line in file: 
+        file2.write(promijeni(listaSlova,line)) 
+    file.close() 
+    file2.close() 
+ 
+ 
+import zadatak2_RenatoDean 
+import unittest 
+class TestirajPromijeni(unittest.TestCase): 
+    def test_promijeni_pr1(self): 
+        rez  = zadatak2_RenatoDean.promijeni(['v','u','p'],"avokado") 
+        t_rez= "aVokado" 
+        self.assertEqual(rez, t_rez) 
+    def test_promijeni_pr2(self): 
+        rez  = zadatak2_RenatoDean.promijeni(['o','d','j'],"ajme meni nije mi dobro") 
+        t_rez= "aJme meni niJe mi DObrO" 
+        self.assertEqual(rez, t_rez) 
+    def test_promijeni_pr3(self): 
+        rez  = zadatak2_RenatoDean.promijeni(['h','e','l','p'],"treba prezivit drugi mjesec") 
+        t_rez= "trEba PrEzivit drugi mjEsEc" 
+        self.assertEqual(rez, t_rez) 
+if __name__ == "__main__": 
+    unittest.main(exit=False) 
+ 
+Tražote od korisnika da unosi brojeve sve dok ne unese neki prirodan broj izmedu 10000 i 10000000 (koristite try i except i svaki put kad nije unesen broj pokupite iznimku ili ako je unesen broj koji nije u danom rasponu, bacite ValueError). Kada dobijete valjan broj, pozovite funkciju izracunaj koja će za dani broj vratiti rezultat sljedeće operacije: ako je broj peteroznamenkast., vrati sumu njegovih znamenki; ako je broj šesteroznamenkast, vrati aritmetičku sredinu njegovih znamenki; ako je broj sedmeroznamenkast, vrati sumu djelitelja tog broja. 
+Za funkciju izracunaj napravite odgovarajući doctest sa barem tri testa i pokrenite ga i main dijelu programa. 
+ 
+uneseno=0 
+while(uneseno==0): 
+    try: 
+        broj=int(input("Unesite prirodan broj izmedu 10000 i 10000000: ")) 
+        if(broj<=10000 or broj >=10000000): 
+            raise ValueError("Broj nije u rasponu") 
+        uneseno+=1 
+    except ValueError as err: 
+        print(err) 
+def izracunaj(broj): 
+    """ 
+    >>> izracunaj(15000) 
+    6 
+    >>> izracunaj(111111) 
+    1.0 
+    >>> izracunaj(1234567) 
+    1244416 
+    """ 
+    if(broj > 10000 and broj < 100000): 
+        suma=0 
+        while broj: 
+            suma+=broj%10 
+            broj=broj//10 
+        return suma 
+    elif(broj >= 100000 and broj < 1000000): 
+        suma=0 
+        while broj: 
+            suma+=broj%10 
+            broj=broj//10 
+        return suma/6 
+    else: 
+        suma=0 
+        for i in range(1,broj+1): 
+            if broj%i==0: 
+                suma+=i 
+        return suma 
+if __name__=="__main__": 
+    import doctest 
+    doctest.testmod() 
+    print(izracunaj(broj)) 
+ 
+# U nekom kinu se nalazi 15 redova sa po 25 sjedala u redu. Prije projekcije nekog flima je moguće napravite rezervaciju na jedan od tri načina: telefonskom rezervacijom, rezervacijom na blagajni li rezervacijom putem interneta. Diferirajte funkciju rezerviraj koja te primati dva argumenta: sjedalo - uredeni par koji na prvom mjestu ina oznaku reda, a na drugom mjestu oznaku sjedala i nacin- string koji kaže na koji je od tri moguća načina karta rezervirana. Funkcija rezerviraj treba provjeriti nalazi li se sjedalo u listi rezerviranih; ukoliko se nalazi treba ispisati: "Nažalost, sjedalo() u redu () je već rezervirano.", u suprotnom, treba dodati sjedalo u listu rezerviranih, povećati globalnu varijablu brojRezerviranihMjesta za jedan i napisati poruku: "Sjedalo () u redu () uspješno rezervirano koristeći način." Zatim definirajte funkciju telefonskaRezervacija koja te kao argument primati neki prirodan broj n. Funkcija treba n puta na slučajan način generirati red i sjedalo, pozvati funkciju rezerviraj i proslijediti joj generirano sjedalo kao prvi argument, a kao drugi argument string 'telefonska rezervacija' te pozvati funkciju sleep na 1,5s. Definirajte i funkciju rezervacijaNaBlagajni koja će također kao argument primati neki prirodan broj n, zatim n puta na slučajan način generirati red i sjedalo, pozvati funkciju rezerviraj i proslijediti joj generirano sjedalo kao prvi argument, a kao drugi argument string 'rezervacija na blagajni' te pozvati funkciju sleep na 1 s. Na kraju definirajte funkciju internetRezervacija koja će kao argument primati neki prirodan broj n, zatim n puta na slučajan način generirati red i sjedalo, pozvati funkciju rezerviraj i proslijediti generirano sjedalo kao prvi argument, a kao drugi argument string 'rezervacija na internetu' te pozvati funkciju sleep na 0,5s. U main dijelu programa napravite tri threada koristeći biblioteku threading. Prvi thread treba pozvati funkciju telefonskaRezervacija sa argumentom koji je slučajan broj između 40 i 100, drugi thread treba pozvati funkciju rezervacijaNaBlagajni sa argumentom koji je slučajan broj između 20 i 70, a treći thread treba pozvati funkciju internetRezervacija sa argumentom koji je slučajan broj između 70 i 150. Pokrenite threadove i neka glavni thread pričeka da child threadovi zavr0e prije nego što prestane sa izvršavanjem. Na kraju ispišite listu rezerviranih mjesta i koliki je postotak dvorane rezerviran. 
+Napomena: u zadatku je na odgovarajućem mjestu potrebno koristiti lock mehanizam. 
+ 
+import threading,random,time 
+lock=threading.Lock() 
+def rezerviraj (sjedalo,nacin): 
+    global lista_rezerviranih,brojRezerviranihMjesta 
+    if sjedalo in lista_rezerviranih: 
+        print("Nazalost, sjedalo {} u redu {} je vec rezervirano".format(sjedalo[1],sjedalo[0])) 
+    else: 
+        lock.acquire() 
+        lista_rezerviranih.append(sjedalo) 
+        brojRezerviranihMjesta+=1 
+        lock.release() 
+        print("Sjedalo {} u redu {} uspjesno rezervirano koristeci {}".format(sjedalo[1],sjedalo[0],nacin)) 
+         
+def telefonskaRezervacija(n): 
+    for i in range(0,n): 
+        sjedalo=(random.randint(1,15),random.randint(1,25)) 
+        rezerviraj(sjedalo,"telefonska rezervacija") 
+        time.sleep(1.5) 
+         
+def rezervacijanaBlagajni(n): 
+    for i in range(0,n): 
+        sjedalo=(random.randint(1,15),random.randint(1,25)) 
+        rezerviraj(sjedalo,"rezervacija na blagajni") 
+        time.sleep(1) 
+         
+def internetRezervacija(n): 
+    for i in range(0,n): 
+        sjedalo=(random.randint(1,15),random.randint(1,25)) 
+        rezerviraj(sjedalo,"rezervacija na internetu") 
+        time.sleep(0.5) 
+ 
+if __name__=="__main__": 
+    lista_rezerviranih=[] 
+    brojRezerviranihMjesta=0 
+    x=random.randint(40,100) 
+    y=random.randint(20,70) 
+    z=random.randint(70,150) 
+    t1=threading.Thread(target=telefonskaRezervacija,args=(x,)) 
+    t2=threading.Thread(target=rezervacijanaBlagajni,args=(y,)) 
+    t3=threading.Thread(target=internetRezervacija,args=(z,)) 
+    t1.start() 
+    t2.start() 
+    t3.start() 
+    t1.join() 
+    t2.join() 
+    t3.join() 
+    print(lista_rezerviranih) 
+    print("Postotak rezerviranosti je {} % ".format((brojRezerviranihMjesta/(x+y+z))*100)) 
+ 
+#Napišite klasu MobilniTelefon koja ima atribute broj, proizvodac, tezina, dimenzije,godina. Klasa treba sadržavati metodu zovi koja će ao argument primati neki telefonski broj i ispisivati poruku da mobilni telefon sa brojem broj, zove telefon sa brojem koji je je proslijeđen metodi. Nadalje, klasa treba imati atribut brojPoziva koji će biti atribut klase i brojati koliko puta je pozvana metoda zovi. Metodu _str_ prepravite tako da piše „Mobilni telefon, proizvođač, godina proizvodnje“                       Metodu _eq_ prepravite tako da su dva mobilna telefona jednaka ako imaju istog proizvođača, težinu, dimenzije i godinu proizvodnje.                                                                                                              Za sve metode napišite odgovarajući docstring. U posebnom fileu napravite unittest za metode _str_ i _eq_   
+>>>mob1=MobilniTelefon('0914444444', 'Samsung', '145', '142 x 72.5 x 8.1, '2014'                                       >>>mob1.zovi('091555555')                                                                                                                                                                     'Mobilni telefon sa brojem '014444444 zove telefon sa brojem '015555555. '                                                        >>> mob2 = MobilniTelefon('0912342345', 'Sony', '150', '152 x 73.5 x 5.1', '2012')                                       >>> mob1.zovi('0915775566')                                                                                                                                        >>> print (MobilniTelefon.brojPoziva)                                                                                                                                '2' 
+>>>print(mob1)          
+'Mobilni telefon, Samsung, 2014.' 
+>>> print (mob1 ==mob2) 
+False 
+>>> mob3= Mobilni Telefon('0911231528', 'Samsung', '145', '142 x 73.5 x 8.1', '2014')    
+>>> print(mob1==mob3) 
+True 
+Class Mobilni Telefon : 
+         „““ klasa koja def mobilni telefon“““ 
+         Broj poziva = 0 
+        Def__init__(self, broj, proizvodac, tezina, dimenzije, godina) : 
+        „““(MobilniTelefon, int, str, float, int, int) -> NoneType „““ 
+       Self.broj=broj 
+       Self.proizvodac=proizvodac 
+      Self.tezina=tezina 
+      Self.dimenzije= dimenzije 
+      Self.godina= godina                  
+Def zovi (self, int2) 
+        „““(MobilniTelefon, Mobilni telefon) ->str“““ 
+       Return „Mobilni telefon sa brojem“ +self.broj + „ zove telefon s brojem „ + mt2.broj „ 
+      Self.__MobilniTelefon__.brojPoziva +=1 
+Def __str__(self) : 
+      „““(MobilniTelefon) -> str vraća podatke o mobitelu „““ , „+self.proizvodac+“, „+self.godina+“, „return „Mobilni telefon', proizvodac, godina proizvodnje „ 
+Def __eq—(self, int2) : 
+     „““(MobilniTelefon, MobilniTelefon) -> bool ) Vraća true ako su dva modela jednaka „““ 
+     Return self.proizvodac ==mmt2.proizvodac and self.tezina==mt2.tezina \  and self.godina ==mt2.godina 
+Filenai = open („ novifile.txt“, w) 
+If __ name__ == „__main__“ 
+                        Import doctest 
+                       Doctest.testmod() 
+                       Import unittest 
+                       Import zadatak 3                     
+Class Test__str__(unittest.TestCase) ; 
+          Def test _str_prl (self) : 
+             Stvarni = zadatak3. __str__() 
+             Ocekivani =  
+            Self.assertEqual(stvarni, ocekivani) 
+Def test_test_str_pr(self) : 
+         Stvarni = zadatak3. __str__() 
+         Ocekivani = 
+        Self.assertEqual(stvarni,ocekivani= 
+Class Test __eq__(Unittest.Test Case) : 
+          Def rest _eq_pr1(self): 
+     Ocekivani= 
+     Self.assertEqual(stvarni,ocekivani) 
+    
+    Def test _eq_pr2(self) : 
+           Stvarni=zadatak3. _eq_() 
+          Ocekivani = 
+         Self.assertEqual(stvarni,ocekivani) 
+ 
+ 
+#Fast food restoran prodaje nekoliko vrsti hamburgera. Restoran u svakom trenutku može imati najviše 58 hamburgera. Napišite metodu kupi () koja kao argument prima određen broj n i označava da neki kupac želi kupiti n hamburgera. Napišite metodu peci() koja označava da zaposlenici peku 10 hamburgera. Ukoliko neki kupac pokuša kupiti hamburgere, a u restoranu ih nema dovoljan broj, treba ispisati: „ Nažalost, nemamo dovoljno hamburgera za vašu narudžbu.“ U suprotnom ispisati: „ Nakon ove transakcije ostaje još (broj hamburgera) hamburgera u restoranu.“ Ukoliko zaposlenici pokušavaju ispeći više hambugera nego što restoran može imati (uzimajući u obzir i koliko se hamburgera trenutno nalazi u restoranu) treba ispisat: „Nažalost, nemamo mjesta za sve hamburgere, moramo baciti. „. U suprotnom ispisati „ Nakon pečenja imamo (broj hamburgera) hamburgera u restoranu. „ U obje metode prvo treba pozvati metodu sleep iz biblioteke time na slučajan broj sekundi iz raspona 1 do 4. U main dijelu programa generirajte slučajan broj k između 4 i 60, te napravite k threadova koji će pokretati funkciju kupi() (broj hamburera n neka svaki put bude slučajan broj između 3 i 15) te k threadova koji će pokretati funkciju peci(). Pokrenite sve stvorene threadove. Main thread treba pričekati da svi child threadovi završe prije nego on završi. Pomoću ctime izmjerite vrijeme potrebno da svi započeti threadovi završe. Pretpostavite da restoran na početku ima 58 kamburgera. 
+ 
+From time import sleep 
+From random import randrange 
+From threading import Thread 
+Hamburgeri = 58 
+Def kupi(n) 
+      Global hamburgeri 
+     Sleep(randrange(1,4)) 
+     If n> hamburgeri : 
+        Print ( „ Nažalost, nemamo dovoljno hamburgera za vašu narudžbu. „ 
+    Else : 
+        Hamburgeri -= n 
+        Print („nakon ove transakcije ostaje još „+str(hamburgeri)+“ hamburgera u restoranu.“) 
+Def.peci() ; 
+        Global hamburgeri 
+        Sleep (randrange (1,4)) 
+        If hamburger + 10 >58 : 
+            Print („Nažalost, nemamo mjesta za sve hamburgere, moramo baciti.“) 
+            Hamburgeri = 58 
+       Else ;  
+            Hamburgeri +=10 
+            Print („ Nakon pečenja imamo „ +str(hamburgeri) +“ hamburgera u restoranu „) 
+If __name__==“__main__“ : 
+        K = randrange(4,60) 
+        threadsKupi = [] 
+        threadsPeci = [] 
+        for i in range(k) : 
+              t1 = Thread(target=kupi, args= (randrange (3,15),)) 
+              threadskupi.append(t1) 
+              t2 = Thread(target = peci) 
+              threads.Peci. append(t2) 
+        for i in range(k) : 
+             threadsKupi[i].start() 
+             threads.peci[i].start() 
+       for i in range(k) : 
+              threadsKupi[i].join() 
+              threadsPeci[i].join() 
+ 
+#U igri pogađanja riječi postoji jedna skrivena riječ duljine 5 slova. Cilj igre je pogoditi tu riječ. Svaki put kad se unese jedan pokušaj, dobije se hint: oznaka za slova koja se nalaze u skrivenoj riječi na istom mjestu kao i u pokušaju te oznaka za slova koja se nalaze u skrivenoj riječi: ali ne na istom mjestu kao u položaju.  Vaš zadatak je napisati funkciju usporedba koja će primati dva stringa i uspoređivati na sljedeći način: ako se u provm stringu neko slovo nalazi na istom mjestu kao i u drugom stringu, treba ga napisati unutar običnih zagrada '()'; ukoliko se slovo iz prvog stringa ne nalazi u drugom stringu treba ga samo ispisati. Npr. Usporedba ('mladi', mačka') treba ispisati '[m]l(a)di'. Za funkciju usporedba napišite odgovarajući docstring i napravite doctest. Ispod funkcije usporedba prepišite sljedeći kod kako biste mogli igrati pogađanja riječi : 
+Def pogadanje(rijec) : 
+       Pogodak = None 
+      While pogodak != rijec : 
+                 Pogodak = input(„Pokušaj: „) 
+                 Usporedba(pogodak, rijec) 
+                 Print () 
+Npr. Ako je riječ koju treba pogoditi 'mačka', ako pozovete funkciju pogađanje, treba se dobiti sljedeći ispis (uz navedene unose) :  
+Pokušaj: pojam 
+Poj(a)(m) 
+Pokušaj : mladi 
+[m]l(a)di 
+Pokušaj : majka 
+[m][a]j[k][a] 
+Pokušaj : mačka 
+[m][a][č][k][a] 
+ 
+ 
+ 
+Def usporedba(pogodak,rijec): 
+   Rez=“““ 
+   For i in range(5) 
+       If pogodak[i]==rijec[i] : 
+           Rez+=“[„+pogodak[i]+“]“ 
+     Elif pogodak[i] in rijec:  
+           Rez+=“(„+pogodak[i]+“)“ 
+     Else: 
+           Rez+=pogodak[i] 
+ Def pogadanje(rijec): 
+      Pogodak = None 
+      While pogodak != rijec: 
+           Pogodak = input(„pokušaj:“) 
+           Usporedba(pogodak, rijec) 
+           Print() 
+Pogadanje(„mačka“) 
+ 
+ 
+# Studentski restoran ima proizvode raspoređene u četiri kategorije. U prvoj su mliječni proizvodi(npr. Puding, čokoladno mlijeko, jogurt), u drugoj su glavna jela (npr. Bečki, pljeskavica, gulaš) u trećoj su prilozi (npr. Pire krumpir, mahune, špinat) i u četvrtoj su napitci ( npr. Voda, prirodni sok, mineralna voda). Napravite rječnik popis_proizvoda koji će kao ključeve imati brojeve kategorija, a kao vrijednosti liste naziva proizvoda u kategorijama ( sa barem četiri proizvoda u svakoj od kategorija). Kada se obavlja kupovina, na jednom računu se smiju naći samo po dva proizvoda iz pojedina kategorije. Napišite funkciju provjera koja će primati rječnik popis_proizvoda te listu proizvoda koju neka osoba želi kupiti. Funkcija treba provjeriti je li dozvoljeno kupiti navedene proizvode, tj. nalazi li se više od dva proizvoda iz bolo koje kategorije na proslijeđenoj listi. Ukoliko nije dozvoljeno kupiti te proizvode, funkciju treba vratiti False, u suprotnom treba vratiti True. Zatim treba napraviti listu racuni koja će sadržavati barem četiri liste sa popisima proizvoda koji su neke osobe htjele kupiti. Koristeći komprehenciju liste i funkciju provjera, napravite novu listu koja će sadržavati samo one liste iz liste racuni koje su dozvoljene za kupovinu. Na kraju ispišite dozvoljene račune jedan ispod drugoga u obliku: 
+Račun: proizvod_1, proizvod_2,… 
+Račun: prizvod_1, proizvod_2 itd. 
+Def provjera(popis_proizvoda,lista): 
+       Pon=[0,0,0,0] 
+       For l in lista ; 
+           If I in popis_proizvoda[1]: 
+               Pon[0]+=1 
+           Elif I in popis_proizvoda[2]: 
+               Pon[1]+=1 
+           Elif I in popis_proizvoda[3]: 
+               Pon[2]+=1 
+           Elif i in popis_proizvoda[4]: 
+               Pon[3]+=1 
+      If max(pon)>2: 
+           Return False 
+      Else : 
+           Return True 
+Popis_proizvoda={1:[„puding“,“mlijeko“,“jogurt“,“sir“],2:[„bečki“,“pljeskavica“,“gulaš“,“špageti“],3:[„pire krumpir“,“mahune“,“špinat“,“riža“],4:[„voda“,“prirodni sok“,“mineralna voda“,“čaj“]} 
+racuni=[„puding“,“bečki“,“sok“,“mlijeko“][„sir“,“jogurt“,“bečki“,“sok“,“mlijeko“],[„gulaš“,“špinat“,“pire krumpir“,“riža“],[„špinat“,“bečki“,“sok“,“sir“]] 
+i=1 
+dat=““ 
+for el in rez: 
+     dat+=str(i)+=.račun:“+“,“.join(el)“\n“ 
+     i+=1 
+ 
+# Napišite fukciju Trazi kojoj ćete proslijediti 2 stringa. Funkcija treba vratiti True ako se prvi nalazi u drugom u suprotnome False. Zatim napišite funkciju filtriraj kojoj ćete proslijediti string pojam i listu stringova stringovi te koristeći list comprehension i funkciju Traži napraviti novu listu koja će u sebi sadržavati samo one pojmove iz liste strinkovi u kojima se nalazi pojam. Zatim svaki element nove liste, zamijenite pojam sa istim tim pojmom napisanim velikim slovima. Funcija filtriraj treba vratiti elemente liste kao jedan string u kojem je svaki element odvojen dvotočkom. Za funkcju Traži napravite odgovarajući doctest, a za funkciju filtriraj u posebnom fileu odgovrajuci unittest. 
+ 
+Def trazi(string1, string2) 
+“““(str,str)->bool 
+Funkcija vraca True ili False ovisno o tome jeli prvi string sadrzan unutar drzgog 
+>>>trazi(“blah“,“sblahsjfosi“) 
+True 
+>>>trazi(“blah“,“hdisd“) 
+Flase 
+If strinf1 in string2: 
+   Return True 
+Else: 
+   Return False 
+Def filtriraj(pojam, stringovi): 
+Rje=[s for s in stringovi if trazi(pojam,s)] 
+Rje2=“:“.join(rje) 
+Rje2=rje2.replace(pojam.pojam.upper()) 
+Return rje2 
+If__name__==“__main__“ 
+Filtriraj(“man“,“majakalmajliomaj“) 
+ 
+# Napišite klasu Pismo koja ima atribute tezina, adresa te metodu posalji() koja će ispisivati poruku oblika „Pismo težine _g se šalje na adresu“. Zatim napišite klasu VrijednosnoPismo koja će naslijediti klasu Pismo, ali će kao dodatni atribut imati vrijednost. Klasa VP akođer treba imati metodu posalji() kao i nadređena klasa Piamo koja će omati jedan dodatni izborni argument otkupnina koja će poi defaultu biti 0. Ako je otkuonina =0, onda metoda posalji() iz klase VP treba pozvati metodu posaljI() iz klase Pismo. U suprotnome, treba ispisati „Pismo težine _g i vrijednosti _kn se šačlje na adresu _ s otkupninom _kn“. 
+Class Pismo: 
+Def __init__(self,tezinaadresa): 
+Self.tezina=tezina 
+Self.adresa=adresa 
+Def posalji(self): 
+Print(“Pismo težine %.2f g se šalje na adresu %.s“%(self.tezina,self.adresa)) 
+Class VrijednosnoPismo(Pismo): 
+Def __init__(self,tezina,adresa,vrijednost): 
+Super(VrijednosnoPismo,self).__init__(tezina,adresa) 
+Self.vrijednost=vrijednost 
+Def posalji(self,otkupnina=0): 
+If otkupnina==0: 
+Super(VrijednosnoPismo,self).posalji() 
+Else: 
+Print(“Pismo težine %.2f g i vrijednosti %.2f kn se šalje na adresu %s s otkupninom %.2f kn“%(self.tezinamself.vrijednost,self.adresa,otkuonina)) 
+Def izracunajNaknadu(self,otkupnina): 
+If 1<otkupnina<100 
+Return 9 
+Else: 
+Return 0.1*otkupnina 
+P=Pismo(1,“adresa“) 
+P.posalji() 
+ 
+P2=VrijednosnoPismo(1,“adresa“,100) 
+P2.posalji() 
+P2.posalji(50) 
+Print(P2.izracunajNaknadu(100)) 
+ 
+# Napravite klasu FriendlyNumbers koja će naslijediti klasu Thread iz modula threading. Klasa treba imati __init__ metodu koja će kao argumente primati dva cijela broja. U metodi run() treba provjeriti i ispisati jesu li dani brojevi prijateljski. U main dijelu generirajte dva puta po 150 slučajnih brojeva iz intervala [5,1000] i napravite 150 threadova te ih pokrenite. Main thread treba završiti nakon pto završe svi child threadovi. 
+ 
+Import threading,random 
+Def sumOfFactor(x): 
+Return sum([n for n in rang(1,x) if x%n==0]) 
+ 
+Class FriendlyNumbers(threadin.Thread): 
+Def __init__(self,a,b): 
+Threading.Thread.__init__(self) 
+Self.a=a 
+Self.b=b 
+Def run(self): 
+If sumOfFactors(self.a)==self.b and sumOfFactors(self.b)==self.a: 
+Print(“%d i %d su prijteljski.“&(self.a,self.b)) 
+Else: 
+Print(“&d i %d nisu prijateljski“%(self.a,self.b)) 
+ 
+If __namespace__==“__main__“: 
+P=[] 
+T=[] 
+ 
+For i in range(150): 
+X=random.randint(5,1000) 
+Y=random.randint(5,1000) 
+p.append((x,y)) 
+ 
+for i in range(150): 
+t1=FriendlyNumbers(P[i][0],P[i][1]) 
+t.append(t1) 
+ 
+for thr in t: 
+thr.start() 
+ 
+for thr in t: 
+thr.join() 
+ 
+ 
+# Napišite funkciju najveca_duljina koja će za danu listu stringova vratiti duljinu najduljeg stringa iz te liste. Zatim definirajte fukciju nova_lista koja će kao argument primiti početnu listu stringova i tražiti od korisnika da unese neki broj između 1 i broja koji će vratiti funkcija najveca_duljina te koristeći list comprehension od dane liste stringova stvoriti novu listu samo od onih elemenata koji su kraći od broja koji je dao korisnik. Na kraju, funkcija nova_lista treba vratiti dobivenu listu sortiranu silazno po abecedi. Funciju najveca_duljina testirajte doctestom, a funkciju nova_lista unittestom. 
+ 
+Def najveca_duljina(lista): 
+“““ 
+>>> najveca_duljina([“asd“,“asdf“,“a“]) 
+4 
+“““ 
+Max=len(lista[0]) 
+For l in lista: 
+Temp=len(l) 
+If temp>max: 
+Max=temp 
+Return max 
+ 
+Def nova_lista(lista): 
+Max=najveca_duljina(lista) 
+N=max+1 
+While n>max: 
+N=input(“unesite broj izmedu 1 i “+str(max)+“:“) 
+Rez=[s for s in lista if len(s)<n] 
+Rez.sport(reverse=True) 
+Return rez 
+ 
+If __name__==“__main__“: 
+Import doctest 
+Doctest.testmod() 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+# U fileu namirnice.txt nalazi se količina namirnica koju nei restoran posjeduje. U fileu pizze.txt se nalazi popis pizza koje restoran može isporućiti i popis namirnica koje trebaju za napraviti pojedinu pizzu. Učitajte podatke iz filea namirnice.txt u listu uređenih parova oblika (namirnica,kollicina namirnice). Zatim učitajte podatke iz file pizze.txt u riječnik kojemu će ključevi biti imena pizza a vrijedosti lista namirnica potrebnih za izradu pojedine pizze. Prilikom otvaranja oba file koristite try i except blok kako bi provjerili postoje li uopce fileovi tih naziva. Definirajte funkciju naruci() kojoj cete proslijediti listu pizza koje entko zeli naruciti. Ukoliko rstoran posjeduje dovoljno namirnica za napraviti narudzbu treba ispisati “Nrudzba uspjesno zaprimljena“. Ukoliko nema dovoljno namirnica za napraviti sve pizze iz narudzbe treba baciti ValueError s porukom “Nazalost nemamo dovoljno namirnica za vasu narudzbu“. U main dijelu programa napravite bar dva poziva funkcije narudzba i uhvatite pogreske koje se mogu dogoditi. 
+Def naruci(narudzba): 
+Global namirnice 
+Global pizze 
+Sastojci={} 
+For el in pizze[el]: 
+If l not in stastojci: 
+Sastojci[l]=1 
+Else: 
+Sastojci[l]=+1 
+Try: 
+B=True 
+For el in sastojci: 
+If dict(namirnice)[el]<sastojci[el]: 
+Raise ValueError 
+Break 
+Except ValueErroe: 
+Print(“nazalost nemamo dovoljno namirica za vašu narudžbu.“) 
+Else: 
+Print(“narudžba uspješno zaprimljena.“) 
+ 
+Try: 
+File=open(“namirnice.txt“,“r“) 
+Namirnice=[] 
+For line in file: 
+L=line.split(“: “) 
+Namirnice.append((l[0],int(l[1].rstrip()))) 
+File.close() 
+File=open(“pizze.txt“,“r“) 
+Pizze={} 
+For line in file: 
+Line=line.rstrip() 
+If line!=““: 
+Ime=line.split(“: “) 
+Sastojci=ime[1].split(“, “) 
+Pizze[ime[0]]=sastojci 
+File.close() 
+ 
+Naruci([“margarita“,“capricosa“,“capricosa“]) 
+Naruci([“hawaii“,“hawaii“]) 
+Except FileNotFoundError: 
+Print(“Datoteka tog naziva ne postoji!“) 
+ 
+ 
+ 
+ 
+ 
+# U pošti postoji riječnik u kojem su zapisani poštanski brojevi glavnih gradova i županija. Svaki dan na šalter dolaze ljudi slati pakete u razne dijelove Hrvatske i Marko je došao na ideju da bi trebalo proširiti postojeći riječnik. Trebate napraviti funkciju koja će svaki put kad netko želi poslati paket, kao argument primiti neki poštanski broj i ime grada i ako se taj broj ne nalazi u riječniku provjeriti je li on ispravan (mora biti peteroznamenkast broj izmedu 10000 i 53296 te počinjati sa 10, 20 22,23,..), te ako je ispravan unijeti kombinaciju postanski_broj:ImeGrada u riejcnik. Napišite i funkciju koja će kao argument primiti string duljine 2, pretvoriti cijeli rijecnik u listu te koristeći list comprehension izdvojiti u novu listu samo one key:value parove iz rijecnika čiji key započinje sa unešenim stringom i vratiti kao rezultat tu listu sortiranu uzlazno po poštanskom broju. 
+ 
+Rijecnik_gradova={10000:“Zagreb siojfpoafjawprofjasc“} 
+Def unos_gradova(broj,ime): 
+If broj nor in rijecnik_gradova: 
+If broj>10000 and broj>53296 and broj//10000 in [10,20,22,23,31,32,33,34,40,42,…]:rijecnik_gradova[broj]=ime 
+Return rijecnik_gradova 
+ 
+Def find(s): 
+L=list(rijecnik:gradova.items()) 
+L1=[x for x in l if x[0]//1000==s] 
+Return l1 
+ 
+Unos_grada(522220,“Labin“) 
+Unos_grada(52420,“Buzet“) 
+Unos_grada(52470,“Umag“) 
+Unos_grada(31403,“Vuka“) 
+Print(find(52)) 
+Print(find(31)) 
+ 
+ 
+# Definirajte funkciju ucitaj() koja ce iz filea proizvdi.txt ucitati proizvode i njihove cijene i kao rezultat vratiti lista_proizvoda koja ce sadrzavati uredene parove proizvoda i cijena. Koristeći try i except blok za provjeru postoji li uopce file tog naziva za otvoriti. Koristite metodu kupi() i koja ce kao argument ispisati na ekran samo nazive proizvoda iz liste lista_proizvoda. Nakon toga ce traziti od korisnika da odabere odredeni proizvod zadan broj puta. Ukoliko korisnik upiše da želi nešto što nije na listi proizvoda treba baciti ValueError s porukom „traženi proizvod nije dostupan.“ I ponovno ispisati listu te tražiti od korisnika da bira dalje . svi odabrani proizvodi spremaju se u listu kosarica sve dok u njoj ne bude broj_proizvoda. Na kraju treba vratiti listu kosarica(koju je korisnik odabrao). Nakon toga definirajte dunkciju ukupna_cijena() koja prima tri argumenta (listu kosarica koju su odabrali pozivom funkcije kupi(), listu lista_proizvoda koju dobijete funkcijom ucitaj() i prirodan broj n koji predstavlja budzet). Ukoliko cijena premasi budzet, treba baciti ValueError „Nemate dovoljno novaca.“ U suprotnome treba ispisati „ … “. u main dijelu pozovite funkciju ucitaj(), nakon toga sastavite jednu kosaricu pomocu funkcije kupi() te na kraju pozovite funkciju ukupna_cijena() za dobivene dvije liste i nekim budzetom. 
+ 
+Def ucitaj(filename): 
+Lista_proizvoda=[] 
+Try: 
+For line in file: 
+L=line.split(“; “) 
+L[1]=float(l[1].rstrip()) 
+Lista_proizvoda.append() 
+File.close() 
+Return lista_proizvoda 
+Except FileNotFounError: 
+Print(“Datoteka ne postoji! Pokušajte ponovo“) 
+ 
+Def kupi(broj_proizvoda,lista_proizvoda): 
+Print(“proizvodi: “) 
+Proizvodi=[] 
+Kosarica=[] 
+ 
+For proizvodi in lista_proizvoda: 
+Proizvodi.append(proizvod[0]) 
+Print(proizvod[0]) 
+While len(kosarica)<broj_proizvoda: 
+Try: 
+Name=input(“odaberite željeni proizvod: “) 
+If name.lower() in proizvodi: 
+Kosarica.append(name.lower()) 
+Else: 
+Raise ValueError(“Traženi proizvod nije dostupan.“) 
+Except ValueError as err: 
+Print(err) 
+For proizvodi in lista:proizvoda: 
+Print(proizvod[0]) 
+Return kosarica 
+ 
+Def ukupna_cijena(kosaricam lista_proizvoda, n): 
+Dct={} 
+For el in lista_proizvoda: 
+Dct[el[0]]=el[1] 
+Cijena=0 
+For el in kosarica: 
+Cijena+=dct[el] 
+If cijena>n: 
+Raise ValueError(“Nemate dovoljno novaca za željene proizvode“) 
+Else: 
+Print(“Ostaje vam %.2f kn u budzetu nakon ove kupovine“%(n-cijena)) 
+ 
+If __name__==“__main__“: 
+Lista=ucitaj(“proizvodi.txt“) 
+Kosarica=kupi(5,ucitaj(“proizvodi.txt“)) 
+Try: 
+Ukupna:cijena(kosarica,lista,30) 
+Except ValueError as err: 
+Print(err) 
+ 
+If __name__==“__main__“: 
+Lista=ucitaj(“proizvodi.txt“) 
+Kosarica=kupi(5,ucitaj(“proizvodi.txt“)) 
+Try: 
+Ukupna_cijena(kosaricamlista,30) 
+Except ValueError as err: 
+Print(err) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+# Napišite klasu Videoteka. Klasa treba imai atribut brojFilmova u koju će se spremati informacija o broju naslova kojima videoteka raspolaže i atribut posudeni koji je na početku stvaranja klase prazan riječnik. Predefinirajte metodu __str__ tako da ispis klase bude u obliku “Videoteka sa (brojFilmova) filmova“. Nadalje, klasa videoteka treba imati i riječnik posudeni i spremiti par imeFilma, brojposudivanja za odgovarajući film te vratiti riječnik posudeni sortiran uzlazno po imenu filma. Za sve metode napisati odgovarajuci docstring. Za metodu __str__ napraviti doctest, a za metodu posudi() odgovarajuci unittest u nvoom fileu. 
+ 
+Class Videoteka: 
+“““ 
+(videoteka, int)->int 
+“““ 
+Self.brojFilmova=brojFilmova 
+Self.posudeni={} 
+ 
+Def __str__(self): 
+“““ 
+(videotek->str) 
+Funkcija koja ispisuje bro filmova u videoteci 
+“““ 
+Return “Videoteka sa {0} filmova.“.format(self.brojFilmova) 
+ 
+Def posudi(self,imeFilma): 
+“““ 
+(videotek,str)->list 
+Funkcija koja prima string, provjerava nalazi li se on u rijecniku posudeni film. Ukoli se nalazi, povecava vrijednost pridruzenu kljuci za 1, u suprotnom ubacuje taj string kao novi kljuc 
+“““ 
+Self.posudeni[imeFilma]=self.posudeni.get(imeFilma,0)+1 
+Return sorted(self.posudeni) 
+ 
+If __name__==“__main__“: 
+Import doctest 
+Doctest.testmode() 
+V1=Videoteka(5) 
+Print(v1.posudi(“Matrix“)) 
+Print(v1) 
+V2=Videoteka(8) 
+Print(V2.posudi(“Kuća“)) 
+Print(v2) 
+ 
+# Napišite klasu PerfectNumber koja će naslijediti klasu Threa iz modula threading. Klasa treba imati __init__ metodu koja će kao argument primati cijeli broj. U metodi run() treba provjeriti i ispisati je li dan broj savršen. Ako je broj savršen, spremiti ga u listu savrseniBrojevi. Broj je savrsen ako je suma svih njegovih djelitelja koji su strogo manji od njega jednaka tom broju. U main dijelu programa generirajte 150 slučajnih brojeva iz intervala [5,1000] i napravite 150 threadova te ih pokrenite. Main thread treba završiti nakon to se svi child threadovi završe. Nakon završetka svih threadova ispišite listu savrseniBrojevi. 
+ 
+Import threading 
+Import random 
+Form math import floor 
+L=threading.Lock() 
+ 
+Class PerfectNumber(threading.Thread): 
+Def __init__(self,n): 
+Threadin.Thread.__init__(self) 
+Self.n=n 
+Def run(self): 
+L.acquire() 
+Djelitelji=[] 
+For i in range(1,floor(self.n)**0.5)+2: 
+If self.n%i==0: 
+Djelitelji.append(i) 
+Suma=0 
+For el in djelitelji: 
+Suma+=el 
+If self.n==suma: 
+Print(“Broj %d je savrsen\“%self.n) 
+Else: 
+Print(“Broj %d nije savrsen\n“%self.n) 
+L.release() 
+ 
+If __name__==“__main__“: 
+Ukupno=150 
+Threads=[] 
+For i in range(0, ukupno): 
+N=random.randint(5,1000) 
+Thread=PerfectNumer(n) 
+Threads.append(thread) 
+Thread.start() 
+For t in threads: 
+t.join() 
